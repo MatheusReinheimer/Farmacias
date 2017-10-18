@@ -4,9 +4,16 @@
  * and open the template in the editor.
  */
 package views;
-import java.awt.*;
+import banco.ClienteDAO;
+import banco.RemedioDAO;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import models.Cliente;
 import models.Remedio;
 /**
  *
@@ -18,10 +25,21 @@ public class ListaRemedio extends JFrame {
      * Creates new form ListaRemedio
      */
     
-    private Remedio cliente;
+    private Remedio remedio;
+    private RemedioDAO dao;
     public ListaRemedio() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            dao = new RemedioDAO();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(ListaRemedio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listRemedio.clear();
+        for (Remedio c : dao.find()) {
+            listRemedio.add(c);
+        }
+        System.out.println("Encontrou "+listRemedio.size()+ " remédios");
     }
     
     /**
@@ -60,24 +78,31 @@ public class ListaRemedio extends JFrame {
         jButton2.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(51, 51, 51));
         jButton2.setText("Novo Remédio");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listRemedio, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
         columnBinding.setColumnName("Id");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
-        columnBinding.setColumnName("Nome");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${bula}"));
+        columnBinding.setColumnName("Bula");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cpf}"));
-        columnBinding.setColumnName("Cpf");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
+        columnBinding.setColumnName("Descricao");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataNascimento}"));
-        columnBinding.setColumnName("Data Nascimento");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${estoque}"));
+        columnBinding.setColumnName("Estoque");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${preco}"));
+        columnBinding.setColumnName("Preco");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tarja}"));
+        columnBinding.setColumnName("Tarja");
+        columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -138,6 +163,23 @@ public class ListaRemedio extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CadastroRemedio cadastro = new CadastroRemedio();
+        this.setEnabled(false);
+        cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cadastro.setVisible(true);
+        
+        ListaRemedio lis = this;
+        cadastro.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                lis.setEnabled(true);
+            }
+        });
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

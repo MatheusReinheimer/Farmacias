@@ -50,27 +50,32 @@ public class ListaCliente extends JFrame {
         listCliente = org.jdesktop.observablecollections.ObservableCollections.observableList(listCliente);
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
         btnNovoCliente = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("CLIENTES");
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 0));
-        jButton1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Alterar");
+        btnAlterar.setBackground(new java.awt.Color(255, 204, 0));
+        btnAlterar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btnAlterar.setForeground(new java.awt.Color(51, 51, 51));
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnNovoCliente.setBackground(new java.awt.Color(102, 255, 102));
         btnNovoCliente.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        btnNovoCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnNovoCliente.setForeground(new java.awt.Color(51, 51, 51));
         btnNovoCliente.setText("Novo Cliente");
         btnNovoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,7 +124,7 @@ public class ListaCliente extends JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnNovoCliente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(btnAlterar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -133,7 +138,7 @@ public class ListaCliente extends JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnAlterar)
                     .addComponent(btnNovoCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,15 +162,21 @@ public class ListaCliente extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoClienteActionPerformed
-        CadastroCliente cadastro = new CadastroCliente(false);
+        
+        CadastroCliente cadastro = new CadastroCliente();
         cadastro.setVisible(true);
-        cadastro.addWindowListener(null);
         
     }//GEN-LAST:event_btnNovoClienteActionPerformed
 
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        cliente = listCliente.get(jTable1.getSelectedRow());
+        CadastroCliente cadastro = new CadastroCliente(cliente);
+        cadastro.setVisible(true);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnNovoCliente;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

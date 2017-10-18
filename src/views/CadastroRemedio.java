@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package views;
 
 import models.Remedio;
@@ -14,10 +10,10 @@ public class CadastroRemedio extends javax.swing.JFrame {
      * @param updating
      */
     private Remedio remedio;
-    public CadastroRemedio(boolean updating) {
+    public CadastroRemedio() {
         initComponents();
         remedio = new Remedio();
-        lblTitulo.setText(updating ? "Editando Remedio" : "Incluindo Remedio");
+        lblTitulo.setText("Incluindo Remedio");
     }
 
     @SuppressWarnings("unchecked")
@@ -86,6 +82,11 @@ public class CadastroRemedio extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(51, 51, 51));
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
@@ -199,6 +200,10 @@ public class CadastroRemedio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

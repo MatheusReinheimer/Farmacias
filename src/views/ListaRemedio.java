@@ -5,6 +5,8 @@
  */
 package views;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import javax.swing.JFrame;
 import models.Remedio;
@@ -60,6 +62,11 @@ public class ListaRemedio extends JFrame {
         jButton2.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(51, 51, 51));
         jButton2.setText("Novo Remédio");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listRemedio, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
@@ -138,6 +145,23 @@ public class ListaRemedio extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CadastroRemedio cadastro = new CadastroRemedio();
+        this.setEnabled(false);
+        cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cadastro.setVisible(true);
+        
+        ListaRemedio lis = this;
+        cadastro.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                lis.setEnabled(true);
+            }
+        });
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

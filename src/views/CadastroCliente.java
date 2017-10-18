@@ -29,7 +29,9 @@ public class CadastroCliente extends javax.swing.JFrame {
     }
 
     public void setCliente(Cliente cliente) {
+        Cliente oldcliente = this.cliente;
         this.cliente = cliente;
+        firePropertyChange("cliente", oldcliente, cliente);
     }
 
     /**
@@ -37,17 +39,20 @@ public class CadastroCliente extends javax.swing.JFrame {
      *
      * @param updating
      */
-    public CadastroCliente(boolean updating) {
+    public CadastroCliente() {
         try {
             dao = new ClienteDAO();
             cliente = new Cliente();
             initComponents();
-            lblTitulo.setText(updating ? "Editando Cliente" : "Incluindo Cliente");
+            lblTitulo.setText("Incluindo Cliente");
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
-
+    public CadastroCliente(Cliente cliente) {
+        this();
+        this.setCliente(cliente);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -191,10 +196,18 @@ public class CadastroCliente extends javax.swing.JFrame {
         System.out.println("Nome: " + cliente.getNome());
         System.out.println("CPF: " + cliente.getCpf());
         System.out.println("Data Nascimento: " + cliente.getDataNascimento().toString());
-        if(dao.insert(cliente) == 0){
-            JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
+        if(cliente.getId() == 0){
+            if(dao.insert(cliente) == 0){
+                JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } else{
+                dispose();
+            }   
         } else{
-            dispose();
+            if(dao.update(cliente)){
+                JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } else{
+                dispose();
+            }
         }
     }//GEN-LAST:event_btnOKActionPerformed
 

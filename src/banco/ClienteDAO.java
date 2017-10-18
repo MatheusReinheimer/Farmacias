@@ -27,12 +27,12 @@ public class ClienteDAO extends DataAccessObject<Cliente> {
     public int insert(Cliente cliente) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String sql = "INSERT INTO cliente(nome,datanascimento,cpf) VALUES ("+
-                    cliente.getNome()+","+sdf.format(cliente.getDataNascimento())+","+cliente.getCpf()+");";
+            String sql = "INSERT INTO cliente(nome,datanascimento,cpf) VALUES ('"+
+                    cliente.getNome()+"','"+sdf.format(cliente.getDataNascimento())+"','"+cliente.getCpf()+"');";
             Statement stmt = conn.createStatement();
-            if(stmt.execute(sql)){
-                return getId();
+            if(stmt.executeUpdate(sql) > 0){
             }
+            return getId();
         } catch (Exception e) {
             System.err.println("Ocorreu um erro: "+e.getMessage());
             try {
@@ -45,8 +45,24 @@ public class ClienteDAO extends DataAccessObject<Cliente> {
     }
 
     @Override
-    public boolean update(Cliente element) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Cliente cliente) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sql = "UPDATE cliente SET nome='"+cliente.getNome()+"',datanascimento='"
+                    +sdf.format(cliente.getDataNascimento())+"',cpf='"+cliente.getCpf()+"' WHERE id="+cliente.getId()+";";
+            Statement stmt = conn.createStatement();
+            if(stmt.executeUpdate(sql) > 0){
+            }
+            return getId() != 0;
+        } catch (Exception e) {
+            System.err.println("Ocorreu um erro: "+e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Falhou Rollback");
+            }
+        }
+        return false;
     }
 
     @Override

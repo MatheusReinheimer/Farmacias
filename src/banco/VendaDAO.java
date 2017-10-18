@@ -39,6 +39,7 @@ public class VendaDAO extends DataAccessObject<Venda> {
                 System.err.println("Ocorreu um erro: "+e.getMessage());
                 try {
                     conn.rollback();
+                    conn.setAutoCommit(true);
                 } catch (SQLException ex) {
                     System.out.println("Falhou Rollback");
                 }

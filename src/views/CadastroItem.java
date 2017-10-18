@@ -29,15 +29,13 @@ public class CadastroItem extends JFrame {
         item = i;
         this.firePropertyChange("venda", old, item);
     }
-    private CadastroVenda parent;
     /**
      * Creates new form CadastroItem
      * @param parent
      */
-    public CadastroItem(CadastroVenda parent) {
+    public CadastroItem() {
         //listaRemedio = daoRemedio.find();
         listaRemedio = new ArrayList<>();
-        this.parent = parent;
         item = new ItemVenda();
         initComponents();
         for (Remedio remedio : listaRemedio) {
@@ -180,7 +178,6 @@ public class CadastroItem extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        parent.onItemCadastrado(item);
         this.dispose();
     }//GEN-LAST:event_btnOKActionPerformed
     private ItemVenda item;

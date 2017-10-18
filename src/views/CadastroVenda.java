@@ -6,6 +6,8 @@
 package views;
 
 import banco.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -239,9 +241,16 @@ public class CadastroVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaActionPerformed
-        CadastroItem cadastro = new CadastroItem(this);
+        CadastroItem cadastro = new CadastroItem();
         cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cadastro.setVisible(true);
+        cadastro.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                venda.addItem(cadastro.getItem());
+                super.windowClosed(e);
+            }
+        });
     }//GEN-LAST:event_btnAdicionaActionPerformed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed

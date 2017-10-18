@@ -37,7 +37,7 @@ public class CadastroCliente extends javax.swing.JFrame {
     /**
      * Creates new form CadastroCliente
      *
-     * @param updating
+     * 
      */
     public CadastroCliente() {
         try {
@@ -49,10 +49,13 @@ public class CadastroCliente extends javax.swing.JFrame {
             System.err.println(e.getMessage());
         }
     }
+
     public CadastroCliente(Cliente cliente) {
         this();
         this.setCliente(cliente);
+        lblTitulo.setText("Editando Cliente");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,16 +199,18 @@ public class CadastroCliente extends javax.swing.JFrame {
         System.out.println("Nome: " + cliente.getNome());
         System.out.println("CPF: " + cliente.getCpf());
         System.out.println("Data Nascimento: " + cliente.getDataNascimento().toString());
-        if(cliente.getId() == 0){
-            if(dao.insert(cliente) == 0){
+        if (cliente.getId() == 0) {
+            System.out.print("INSERT");
+            if (dao.insert(cliente) == 0) {
                 JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
-            } else{
+            } else {
                 dispose();
-            }   
-        } else{
-            if(dao.update(cliente)){
+            }
+        } else {
+            System.out.print("UPDATE");
+            if (dao.update(cliente)) {
                 JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
-            } else{
+            } else {
                 dispose();
             }
         }

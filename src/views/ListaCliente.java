@@ -5,6 +5,8 @@
  */
 package views;
 import banco.ClienteDAO;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
@@ -162,7 +164,6 @@ public class ListaCliente extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoClienteActionPerformed
-        
         CadastroCliente cadastro = new CadastroCliente();
         cadastro.setVisible(true);
         
@@ -172,8 +173,21 @@ public class ListaCliente extends JFrame {
         cliente = listCliente.get(jTable1.getSelectedRow());
         CadastroCliente cadastro = new CadastroCliente(cliente);
         cadastro.setVisible(true);
+        cadastro.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e); //To change body of generated methods, choose Tools | Templates.
+                setListCliente(dao.find());
+            }
+        });
+        
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    public void setListCliente(List<Cliente> listCliente) {
+        this.listCliente = listCliente;
+        firePropertyChange("listCliente", null, listCliente);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnNovoCliente;

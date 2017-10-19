@@ -7,7 +7,7 @@ public class CadastroRemedio extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastroRemedio
-     * @param updating
+     * 
      */
     private Remedio remedio;
     public CadastroRemedio() {

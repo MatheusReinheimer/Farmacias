@@ -199,6 +199,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnOK">
           <Properties>
@@ -238,6 +241,16 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                   </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -246,6 +259,14 @@
               </Properties>
               <BindingProperties>
                 <BindingProperty name="elements" source="Form" sourcePath="${venda.itens}" target="jTable1" targetPath="elements" updateStrategy="0" immediately="true">
+                  <Subbinding sourcePath="${idItem}">
+                    <BindingParameter name="NAME" value="ID"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                  </Subbinding>
+                  <Subbinding sourcePath="${remedio.descricao}">
+                    <BindingParameter name="NAME" value="Remedio"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                  </Subbinding>
                   <Subbinding sourcePath="${quantidade}">
                     <BindingParameter name="NAME" value="Quantidade"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
@@ -262,7 +283,7 @@
         <Component class="javax.swing.JButton" name="btnAdiciona">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="66" green="ff" red="66" type="rgb"/>
+              <Color blue="0" green="cc" red="0" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Calibri" size="12" style="0"/>
@@ -289,6 +310,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Excluir"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

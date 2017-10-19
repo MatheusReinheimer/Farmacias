@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import models.Cliente;
 import models.ItemVenda;
 import models.Venda;
@@ -61,7 +62,22 @@ public class CadastroVenda extends javax.swing.JFrame {
             venda.setCliente(listaCliente.get(comboCliente.getSelectedIndex()));
         });
     }
-
+    
+    public CadastroVenda(Venda v) {
+        this();
+        setVenda(v);
+        int i = 0;
+        for (Cliente cliente : listaCliente) {
+            if(cliente.getId() == v.getCliente().getId()){
+                comboCliente.setSelectedIndex(i);
+            }
+            i++;
+        }
+        comboCliente.setEnabled(false);
+        btnAdiciona.setVisible(false);
+        btnExcluir.setVisible(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,6 +140,11 @@ public class CadastroVenda extends javax.swing.JFrame {
         btnCancelar.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnOK.setBackground(new java.awt.Color(0, 102, 255));
         btnOK.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -137,7 +158,13 @@ public class CadastroVenda extends javax.swing.JFrame {
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${venda.itens}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantidade}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idItem}"));
+        columnBinding.setColumnName("ID");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${remedio.descricao}"));
+        columnBinding.setColumnName("Remedio");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantidade}"));
         columnBinding.setColumnName("Quantidade");
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${valor}"));
@@ -147,7 +174,7 @@ public class CadastroVenda extends javax.swing.JFrame {
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
 
-        btnAdiciona.setBackground(new java.awt.Color(102, 255, 102));
+        btnAdiciona.setBackground(new java.awt.Color(0, 204, 0));
         btnAdiciona.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btnAdiciona.setForeground(new java.awt.Color(255, 255, 255));
         btnAdiciona.setText("+ Adiciona Item");
@@ -161,6 +188,11 @@ public class CadastroVenda extends javax.swing.JFrame {
         btnExcluir.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -258,8 +290,36 @@ public class CadastroVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        dao.insert(venda);
+        String erros = "";
+        if(venda.getItens().isEmpty()){
+            erros+="Itens: a lista de itens deve ter ao menos um item\n";
+        }
+        if(venda.getCliente() == null){
+            erros+="Cliente: selecione um cliente\n";
+        }
+        if(!erros.isEmpty()){
+            JOptionPane.showMessageDialog(this, erros, "Cadastro Inválido!", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            if(dao.insert(venda) != 0){
+                dispose();
+            } else{
+                JOptionPane.showMessageDialog(this, "Erro", "Erro durante cadastro!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if(jTable1.getSelectedRow() == -1){
+            JOptionPane.showMessageDialog(this, "Nenhum item selecionado", "Selecione um item para excluir!", JOptionPane.WARNING_MESSAGE);
+        }
+        else 
+            venda.getItens().remove(jTable1.getSelectedRow());
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
     public Venda venda;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdiciona;

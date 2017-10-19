@@ -34,6 +34,7 @@ public class ListaVenda extends javax.swing.JFrame {
             Logger.getLogger(ListaVenda.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex.getMessage());
         }
+        atualizaLista();
         initComponents();
     }
 
@@ -48,6 +49,7 @@ public class ListaVenda extends javax.swing.JFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         listaVendas = dao.find();
+        conversor = new util.DateToStringConverter();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnVer = new javax.swing.JButton();
@@ -68,11 +70,16 @@ public class ListaVenda extends javax.swing.JFrame {
         btnVer.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btnVer.setForeground(new java.awt.Color(255, 255, 255));
         btnVer.setText("Visualizar");
+        btnVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerActionPerformed(evt);
+            }
+        });
 
-        btnNovo.setBackground(new java.awt.Color(102, 255, 102));
+        btnNovo.setBackground(new java.awt.Color(0, 204, 0));
         btnNovo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btnNovo.setForeground(new java.awt.Color(255, 255, 255));
-        btnNovo.setText("Nova Venda");
+        btnNovo.setText("+ Nova Venda");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
@@ -95,11 +102,14 @@ public class ListaVenda extends javax.swing.JFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cliente.nome}"));
         columnBinding.setColumnName("Nome Cliente");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cliente.cpf}"));
         columnBinding.setColumnName("CPF Cliente");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataVenda}"));
         columnBinding.setColumnName("Data Venda");
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${total}"));
         columnBinding.setColumnName("Total");
         columnBinding.setColumnClass(Double.class);
@@ -164,17 +174,42 @@ public class ListaVenda extends javax.swing.JFrame {
         CadastroVenda cadastro = new CadastroVenda();
         cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cadastro.setVisible(true);
-    }//GEN-LAST:event_btnNovoActionPerformed
-
-    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        cadastro.addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                atualizaLista();
+            }
+        });
         
+    }//GEN-LAST:event_btnNovoActionPerformed
+    private void atualizaLista(){
+        java.util.List<Venda> oldLista = listaVendas;
+        listaVendas = dao.find();
+        firePropertyChange("listaVendas", oldLista, listaVendas);
+    }
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
+        CadastroVenda cadastro = new CadastroVenda(listaVendas.get(jTable2.getSelectedRow()));
+        cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cadastro.setVisible(true);
+        cadastro.addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                atualizaLista();
+            }
+        });
+    }//GEN-LAST:event_btnVerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnVer;
     private javax.swing.JButton btnVoltar;
+    private util.DateToStringConverter conversor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;

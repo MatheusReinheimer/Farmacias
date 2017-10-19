@@ -71,9 +71,9 @@ public class CadastroItem extends JFrame {
         comboRemedio = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spinQtd = new javax.swing.JSpinner();
         jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -101,7 +101,7 @@ public class CadastroItem extends JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Qtd.:");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${item.quantidade}"), jSpinner1, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${item.quantidade}"), spinQtd, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         jTextField1.setEditable(false);
@@ -109,10 +109,15 @@ public class CadastroItem extends JFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${item.valor}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        jButton2.setBackground(new java.awt.Color(255, 0, 0));
-        jButton2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cancelar");
+        btnCancelar.setBackground(new java.awt.Color(255, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnOK.setBackground(new java.awt.Color(0, 102, 255));
         btnOK.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -141,14 +146,14 @@ public class CadastroItem extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(btnCancelar)
                         .addGap(5, 5, 5)
                         .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -164,11 +169,11 @@ public class CadastroItem extends JFrame {
                     .addComponent(comboRemedio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(btnCancelar)
                     .addComponent(btnOK))
                 .addContainerGap())
         );
@@ -194,19 +199,23 @@ public class CadastroItem extends JFrame {
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
     private ItemVenda item;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOK;
     private javax.swing.JComboBox comboRemedio;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     private java.util.List<String> listaNomes;
+    private javax.swing.JSpinner spinQtd;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

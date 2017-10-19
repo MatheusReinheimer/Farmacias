@@ -5,6 +5,7 @@
  */
 package banco;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,12 +28,21 @@ public class VendaDAO extends DataAccessObject<Venda> {
         String[] sql = montaSql(venda);
         if (sql != null) {
             try {
-                Statement stmt = conn.createStatement();
                 conn.setAutoCommit(false);
-                for(String s : sql){
-                    stmt.addBatch(s);
-                }
-                stmt.executeBatch();
+                //Statement stmt = conn.createStatement(Statement.RETURN_GENERATED_KEYS);
+                
+                int i = 0;
+                PreparedStatement stmt = conn.prepareStatement(sql[0], Statement.RETURN_GENERATED_KEYS);
+                System.out.println("Executando comando: "+sql[0]);
+                stmt.execute();
+                ResultSet rs = stmt.getGeneratedKeys();
+                rs.next();
+                int id = rs.getInt(1);
+                sql[1] = sql[1].replaceAll("[?]", (Integer.toString(id)));
+                System.out.println("Executando comando: "+sql[1]);
+                stmt = conn.prepareStatement(sql[1]);
+                stmt.execute();
+                System.out.println("Sucesso");
                 conn.commit();
                 return getId();
             } catch (Exception e) {
@@ -103,14 +113,13 @@ public class VendaDAO extends DataAccessObject<Venda> {
             x += item.getQuantidade() + ",";
             x += item.getValor() + ",";
             x += item.getRemedio().getId();
-            x += ",@idvenda)";
+            x += ",?)";
             insertItens += x + ",";
         }
         insertItens = insertItens.substring(0, insertItens.length() - 1);
-        String[] sql = new String[3];
+        String[] sql = new String[2];
         sql[0] = "INSERT INTO venda(total, clienteid) VALUES (" + venda.getTotal()+"," + venda.getCliente().getId() + ");";
-        sql[1] = "SET @idvenda = last_insert_id();";
-        sql[2] = "INSERT INTO itemvenda(quantidade,valor,remedioid) VALUES " + insertItens + ";";
+        sql[1] = "INSERT INTO itemvenda(quantidade,valor,remedioid,vendaid) VALUES " + insertItens + ";";
         return sql;
     }
     

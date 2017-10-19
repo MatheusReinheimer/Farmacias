@@ -89,7 +89,7 @@ public class CadastroVenda extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -129,25 +129,20 @@ public class CadastroVenda extends javax.swing.JFrame {
         btnOK.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         btnOK.setForeground(new java.awt.Color(255, 255, 255));
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${venda.itens}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${remedio.descricao}"));
-        columnBinding.setColumnName("Remédio");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${remedio.preco}"));
-        columnBinding.setColumnName("Preco");
-        columnBinding.setColumnClass(Double.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantidade}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantidade}"));
         columnBinding.setColumnName("Quantidade");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${valor}"));
         columnBinding.setColumnName("Valor");
         columnBinding.setColumnClass(Double.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -244,18 +239,27 @@ public class CadastroVenda extends javax.swing.JFrame {
         CadastroItem cadastro = new CadastroItem();
         cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         cadastro.setVisible(true);
+        CadastroVenda self = this;
         cadastro.addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosed(WindowEvent e) {
-                venda.addItem(cadastro.getItem());
+                atualizaVenda(cadastro.getItem());
                 super.windowClosed(e);
             }
         });
     }//GEN-LAST:event_btnAdicionaActionPerformed
-
+    public void atualizaVenda(ItemVenda item){
+        venda.addItem(item);
+        firePropertyChange("venda", null, venda);
+        System.out.println("Venda com "+venda.getItens().size()+" itens;");
+    }
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        dao.insert(venda);
+    }//GEN-LAST:event_btnOKActionPerformed
     public Venda venda;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdiciona;

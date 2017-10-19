@@ -6,8 +6,11 @@
 package views;
 
 import banco.RemedioDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import models.ItemVenda;
 import models.Remedio;
@@ -34,8 +37,13 @@ public class CadastroItem extends JFrame {
      * @param parent
      */
     public CadastroItem() {
-        //listaRemedio = daoRemedio.find();
-        listaRemedio = new ArrayList<>();
+        try {
+            daoRemedio = new RemedioDAO();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CadastroItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listaRemedio = daoRemedio.find();
+        //listaRemedio = new ArrayList<>();
         item = new ItemVenda();
         initComponents();
         for (Remedio remedio : listaRemedio) {
@@ -93,7 +101,13 @@ public class CadastroItem extends JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Qtd.:");
 
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${item.quantidade}"), jSpinner1, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
         jTextField1.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${item.valor}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N

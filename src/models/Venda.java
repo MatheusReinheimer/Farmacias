@@ -19,6 +19,7 @@ public class Venda {
 
     public Venda() {
         this.itens = new LinkedList<>();
+        this.itens = org.jdesktop.observablecollections.ObservableCollections.observableList(itens);
     }
     
     private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -90,5 +91,4 @@ public class Venda {
         propertyChangeSupport.firePropertyChange("itens", oldItens, itens);
         propertyChangeSupport.firePropertyChange("total", t, this.getTotal());
     }
-
 }

@@ -13,7 +13,7 @@ public class CadastroRemedio extends javax.swing.JFrame {
     public CadastroRemedio() {
         initComponents();
         remedio = new Remedio();
-        lblTitulo.setText("Incluindo Remedio");
+        lblTitulo.setText("Incluindo Remedio");  
     }
 
     @SuppressWarnings("unchecked")

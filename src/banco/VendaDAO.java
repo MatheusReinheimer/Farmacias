@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import models.*;
@@ -29,20 +30,11 @@ public class VendaDAO extends DataAccessObject<Venda> {
         if (sql != null) {
             try {
                 conn.setAutoCommit(false);
-                //Statement stmt = conn.createStatement(Statement.RETURN_GENERATED_KEYS);
-                
-                int i = 0;
-                PreparedStatement stmt = conn.prepareStatement(sql[0], Statement.RETURN_GENERATED_KEYS);
-                System.out.println("Executando comando: "+sql[0]);
-                stmt.execute();
-                ResultSet rs = stmt.getGeneratedKeys();
-                rs.next();
-                int id = rs.getInt(1);
-                sql[1] = sql[1].replaceAll("[?]", (Integer.toString(id)));
-                System.out.println("Executando comando: "+sql[1]);
-                stmt = conn.prepareStatement(sql[1]);
-                stmt.execute();
-                System.out.println("Sucesso");
+                Statement stmt = conn.createStatement();
+                stmt.addBatch(sql[0]);
+                stmt.addBatch(sql[1]);
+                stmt.addBatch(sql[2]);
+                stmt.executeBatch();
                 conn.commit();
                 return getId();
             } catch (Exception e) {
@@ -55,7 +47,7 @@ public class VendaDAO extends DataAccessObject<Venda> {
                 }
             }
         }
-        System.out.println(sql);
+        System.out.println(Arrays.toString(sql));
         return 0;
     }
 
@@ -74,6 +66,7 @@ public class VendaDAO extends DataAccessObject<Venda> {
         List<Venda> lista = new LinkedList<>();
         try {
             String sql = this.select+";";
+            System.out.println("Executando comando:\n"+sql);
             Statement stmt = conn.createStatement();
             try(ResultSet rs = stmt.executeQuery(sql)){
                 while(true){
@@ -113,21 +106,25 @@ public class VendaDAO extends DataAccessObject<Venda> {
             x += item.getQuantidade() + ",";
             x += item.getValor() + ",";
             x += item.getRemedio().getId();
-            x += ",?)";
+            x += ",@idvenda)";
             insertItens += x + ",";
         }
         insertItens = insertItens.substring(0, insertItens.length() - 1);
-        String[] sql = new String[2];
+        String[] sql = new String[3];
         sql[0] = "INSERT INTO venda(total, clienteid) VALUES (" + venda.getTotal()+"," + venda.getCliente().getId() + ");";
-        sql[1] = "INSERT INTO itemvenda(quantidade,valor,remedioid,vendaid) VALUES " + insertItens + ";";
+        sql[1] = "SET @idvenda = last_insert_id();";
+        sql[2] = "INSERT INTO itemvenda(quantidade,valor,remedioid,vendaid) VALUES " + insertItens + ";";
         return sql;
     }
     
-    public final String select = "SELECT v.*, i.*, c.*, r.* FROM venda v "+
+    public final String select = "SELECT v.id as 'v.id', v.datavenda as 'v.datavenda',\n"+
+                            " i.iditem as 'i.iditem', i.valor as 'i.valor', i.quantidade as 'i.quantidade',\n"+
+                            " c.id as 'c.id',c.cpf as 'c.cpf', c.nome as 'c.nome',c.datanascimento as 'c.datanascimento',\n"+
+                            " r.id as 'r.id', r.descricao as 'r.descricao', r.bula as 'r.bula', r.preco as 'r.preco', r.tarja as 'r.tarja', r.estoque as 'r.estoque'\n FROM venda v "+
                             "RIGHT JOIN itemvenda i ON v.id = i.vendaid "+
                             "INNER JOIN cliente c ON v.clienteid = c.id "+
                             "INNER JOIN remedio r ON i.remedioid = r.id";
-                            
+    
     private Venda getVendaFromRS(ResultSet rs) throws SQLException {
         if(!rs.next()){
             return null;
@@ -142,13 +139,13 @@ public class VendaDAO extends DataAccessObject<Venda> {
         v.getCliente().setDataNascimento(rs.getDate("c.datanascimento"));
         v.getCliente().setId(rs.getInt("c.id"));
         do {
-            if(rs.getInt("id") != v.getId()){
+            if(rs.getInt("v.id") != v.getId()){
                 break;
             }
             ItemVenda i = new ItemVenda();
             i.setValor(rs.getDouble("i.valor"));
             i.setQuantidade(rs.getInt("i.quantidade"));
-            i.setIdItem(rs.getInt("i.id"));
+            i.setIdItem(rs.getInt("i.iditem"));
             Remedio r = new Remedio();
             r.setId(rs.getInt("r.id"));
             r.setDescricao(rs.getString("r.descricao"));

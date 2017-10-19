@@ -21,7 +21,7 @@ public abstract class DataAccessObject<T> {
     {
         String url="jdbc:mysql://localhost/farmacia";
         String user="root";
-        String pass="";
+        String pass="root";
         Class.forName("com.mysql.jdbc.Driver");
         conn = DriverManager.getConnection(url, user, pass);
     }

@@ -1,19 +1,44 @@
 
 package views;
 
+import banco.RemedioDAO;
+import javax.swing.JOptionPane;
 import models.Remedio;
 
 public class CadastroRemedio extends javax.swing.JFrame {
+    
+    public Remedio getRemedio() {
+        return remedio;
+    }
+    
+    public void setRemedio(Remedio remedio) {
+        Remedio oldRemedio = this.remedio;
+        this.remedio = remedio;
+        firePropertyChange("remedio", oldRemedio, remedio);
+    }
 
     /**
      * Creates new form CadastroRemedio
      * @param updating
      */
     private Remedio remedio;
+    private RemedioDAO dao;
+    
     public CadastroRemedio() {
-        initComponents();
-        remedio = new Remedio();
-        lblTitulo.setText("Incluindo Remedio");
+        try {
+            dao = new RemedioDAO();
+            remedio = new Remedio();
+            initComponents();
+            lblTitulo.setText("Incluindo Remedio");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    public CadastroRemedio(Remedio remedio) {
+        this();
+        this.setRemedio(remedio);
+        lblTitulo.setText("Editando Remedio");
     }
 
     @SuppressWarnings("unchecked")
@@ -21,6 +46,7 @@ public class CadastroRemedio extends javax.swing.JFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -77,6 +103,11 @@ public class CadastroRemedio extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(51, 51, 51));
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -94,6 +125,10 @@ public class CadastroRemedio extends javax.swing.JFrame {
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${remedio.bula}"), jTextArea2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         jScrollPane2.setViewportView(jTextArea2);
 
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -101,13 +136,16 @@ public class CadastroRemedio extends javax.swing.JFrame {
         jLabel4.setText("Tarja");
 
         jRadioButton1.setBackground(new java.awt.Color(255, 0, 0));
+        buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Vermelha");
 
         jRadioButton2.setBackground(new java.awt.Color(0, 0, 0));
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("Preta   ");
 
         jRadioButton3.setBackground(new java.awt.Color(255, 255, 0));
+        buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Amarela");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -205,7 +243,31 @@ public class CadastroRemedio extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println("Nome: " + remedio.getDescricao());
+        System.out.println("Preco: " + remedio.getPreco());
+        System.out.println("Estoque: " + remedio.getEstoque());
+        System.out.println("Tarja: " + remedio.getTarja());
+        System.out.println("Bula: " + remedio.getBula());
+        if (remedio.getId() == 0) {
+            System.out.print("INSERT");
+            if (dao.insert(remedio) == 0) {
+                JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } else {
+                dispose();
+            }
+        } else {
+            System.out.print("UPDATE");
+            if (dao.update(remedio)) {
+                JOptionPane.showMessageDialog(this, "Houve um erro durante a transacao!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } else {
+                dispose();
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

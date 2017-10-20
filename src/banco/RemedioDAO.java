@@ -17,8 +17,8 @@ public class RemedioDAO extends DataAccessObject<Remedio>{
     @Override
     public int insert(Remedio remedio) {
         try {
-            String sql = "INSERT INTO `remedio` (`descricao`, `bula`, `estoque`, `preco`, `tarja`) VALUES ('"+
-                remedio.getDescricao()+"','"+remedio.getBula()+"','"+remedio.getEstoque()+"','"+remedio.getPreco()+"','"+remedio.getTarja()+"');";
+            String sql = "INSERT INTO `remedio` (`descricao`, `bula`, `estoque`, `preco`) VALUES ('"+
+                remedio.getDescricao()+"','"+remedio.getBula()+"','"+remedio.getEstoque()+"','"+remedio.getPreco()+"');";
             Statement stmt = conn.createStatement();
             if(stmt.executeUpdate(sql) > 0){
             }
@@ -37,7 +37,7 @@ public class RemedioDAO extends DataAccessObject<Remedio>{
     @Override
     public boolean update(Remedio remedio) {
         try {
-            String sql = "UPDATE remedio SET descricao='"+remedio.getDescricao()+"',bula='"+remedio.getBula()+"',estoque='"+remedio.getEstoque()+"',preco='"+remedio.getPreco()+"',tarja='"+remedio.getTarja()+"' WHERE id="+remedio.getId()+";";
+            String sql = "UPDATE remedio SET descricao='"+remedio.getDescricao()+"',bula='"+remedio.getBula()+"',estoque='"+remedio.getEstoque()+"',preco='"+remedio.getPreco()+"' WHERE id="+remedio.getId()+";";
             Statement stmt = conn.createStatement();
             if(stmt.executeUpdate(sql) > 0){
             }
@@ -72,7 +72,6 @@ public class RemedioDAO extends DataAccessObject<Remedio>{
                     r.setDescricao(rs.getString("descricao"));
                     r.setEstoque(rs.getInt("estoque"));
                     r.setPreco(rs.getDouble("preco"));
-                    r.setTarja(rs.getInt("tarja"));
                     lista.add(r);
                 }
             }

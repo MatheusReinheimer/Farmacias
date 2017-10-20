@@ -15,7 +15,6 @@ CREATE TABLE remedio(
     bula varchar(500),
     estoque int not null,
     preco double not null,
-    tarja int not null,
     PRIMARY KEY(id)
 );
 

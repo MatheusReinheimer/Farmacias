@@ -5,22 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class Remedio {
-    
-        private int tarja;
-
-    public static final String PROP_TARJA = "tarja";
-
-    public int getTarja() {
-        return tarja;
-    }
-
-    public void setTarja(int tarja) {
-        int oldTarja = this.tarja;
-        this.tarja = tarja;
-        propertyChangeSupport.firePropertyChange(PROP_TARJA, oldTarja, tarja);
-    }
-
-    
+        
     private String descricao;
 
     public static final String PROP_DESCRICAO = "descricao";

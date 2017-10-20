@@ -73,6 +73,11 @@ public class ListaRemedio extends JFrame {
         jButton1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(51, 51, 51));
         jButton1.setText("Alterar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
         jButton2.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -100,9 +105,6 @@ public class ListaRemedio extends JFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${preco}"));
         columnBinding.setColumnName("Preco");
         columnBinding.setColumnClass(Double.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tarja}"));
-        columnBinding.setColumnName("Tarja");
-        columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -180,6 +182,24 @@ public class ListaRemedio extends JFrame {
         });
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        remedio = listRemedio.get(jTable1.getSelectedRow());
+        CadastroRemedio cadastro = new CadastroRemedio(remedio);
+        this.setEnabled(false);
+        cadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cadastro.setVisible(true);
+        
+        ListaRemedio lis = this;
+        cadastro.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                lis.setEnabled(true);
+            }
+        });
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

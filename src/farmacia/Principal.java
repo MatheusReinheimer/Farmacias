@@ -40,6 +40,7 @@ public class Principal {
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
                 janela.setEnabled(true);
+                janela.setVisible(true);
             }
         };
         cliente.addActionListener((e)->{
@@ -51,6 +52,7 @@ public class Principal {
         });
         remedio.addActionListener((e)->{
             ListaRemedio list = new ListaRemedio();
+            janela.setEnabled(false);
             list.setVisible(true);
             list.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             list.setVisible(true);

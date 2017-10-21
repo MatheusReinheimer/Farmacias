@@ -37,13 +37,8 @@ public class CadastroRemedio extends javax.swing.JFrame {
     
     public CadastroRemedio(Remedio remedio) {
         this();
-        this.setRemedio(remedio);
+        setRemedio(remedio);
         lblTitulo.setText("Editando Remedio");
-<<<<<<< HEAD
-        initComponents();
-        remedio = new Remedio();
-=======
->>>>>>> 64e55e4394f88a188a7227f7d5655814578fffe9
     }
 
     @SuppressWarnings("unchecked")
